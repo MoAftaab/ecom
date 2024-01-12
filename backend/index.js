@@ -10,6 +10,14 @@ const port = 4000;
 app.use(cors());
 app.use(express.json());
 
+const corsOptions = {
+    origin: 'https://ecommerce-blue-three.vercel.app',
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+
 // Database Connection with mongo Db 
 mongoose.connect("mongodb+srv://aftaabdev:contextswitching@cluster0.yv8pea5.mongodb.net/website");
 
