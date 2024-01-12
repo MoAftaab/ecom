@@ -279,42 +279,7 @@ app.post('/getcart', fetchUser, async (req, res) => {
     res.json(userData.cartdata);
 })
 
-// stripe payment
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-app.post('/stripe-checkout', async (req, res) => {
-    const lineItems = req.body.items.map((item) => {
-        const unitAmount = parseInt(item.price.replace(/[^0-9.-]+/g, '') * 100);
-
-        return {
-            price_data: {
-                currency: 'usd',
-                product_data: {
-                    name: item.name,
-                    images: [item.image_url],   
-                },
-                unit_amount: unitAmount,
-            },
-            quantity: item.quantity,
-        };
-    });
-
-    try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: lineItems,
-            mode: 'payment',
-            success_url: 'http://localhost:3000/success', // Update with your success URL
-            cancel_url: 'http://localhost:3000/cancel', // Update with your cancel URL
-            billing_address_collection: 'required',
-        });
-
-        res.json({ sessionId: session.id });
-    } catch (error) {
-        console.error('Error creating checkout session:', error);
-        res.status(500).json({ error: 'Failed to create checkout session' });
-    }
-});
+ 
 
 app.listen(port, (error) => {
     if (!error) {
