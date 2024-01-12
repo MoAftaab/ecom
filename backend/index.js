@@ -36,7 +36,8 @@ app.use('/images', express.static('upload/images'));
 app.post("/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`
+        image_url: `https://backend-lcua.onrender.com/images/${req.file.filename}`
+
     });
 });
 
@@ -290,7 +291,7 @@ app.post('/stripe-checkout', async (req, res) => {
                 currency: 'usd',
                 product_data: {
                     name: item.name,
-                    images: [item.image], // Add the image URL
+                    images: [item.image_url],   
                 },
                 unit_amount: unitAmount,
             },
